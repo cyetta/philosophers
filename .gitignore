@@ -1,6 +1,6 @@
 .DS_Store
 .vscode/
-philo
+philo/philo
 *.o
 *.d
 *.a
