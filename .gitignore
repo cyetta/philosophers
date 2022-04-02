@@ -1,0 +1,7 @@
+.DS_Store
+.vscode/
+philo
+*.o
+*.d
+*.a
+en.subject.pdf
