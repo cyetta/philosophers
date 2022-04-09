@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/07 22:21:18 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/10 02:23:41 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 #include "ft_error.h"
 #include "ft_util.h"
 #include "philo.h"
+
+void	*philosoph(void *ph)
+{
+	return (NULL);
+}
 
 int	load_parameters(t_ph_param *params, int argc, char **argv)
 {
@@ -40,36 +45,11 @@ int	load_parameters(t_ph_param *params, int argc, char **argv)
 	return (0);
 }
 
-int	init_ph(t_ph_param *params, t_philo *ph_arr)
-{
-	int	i;
-	int	*forks;
-
-	ph_arr = (t_philo *) malloc(sizeof(t_philo) * params->numb_philo);
-	if (!ph_arr)
-		return (ERR_INIT_PH_ARR);
-	params->mx_forks (int *) malloc(sizeof())
-
-	i = -1;
-	while (++i < params->numb_philo)
-	{
-		ph_arr[i].numb_philo = i;
-		ph_arr[i].time_to_die = params->time_to_die;
-		ph_arr[i].time_to_eat = params->time_to_eat;
-		ph_arr[i].time_to_sleep = params->time_to_sleep;
-		ph_arr[i].numb_ph_eat = params->numb_ph_eat;
-
-	}
-
-
-	return (0);
-}
-
 int	main(int argc, char **argv)
 {
 	t_ph_param	params;
 	t_ph_param	*ph_arr;
-	int		i;
+	int			i;
 
 	if (argc != 5 && argc != 6)
 		return (ft_error(ERR_ARGUMENT));
@@ -82,6 +62,7 @@ params.time_to_sleep, params.numb_ph_eat);
 	if (init_ph(&params, ph_arr))
 		return (ft_error(ERR_INIT_PH_ARR));
 	i = -1;
+	clear_ph(&params, ph_arr);
 	// while (++i < params.numb_philo)
 	// 	pthread_create;
 }
