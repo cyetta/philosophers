@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:06:26 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/02 19:53:32 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/07 19:41:17 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ to hold two forks.\n◦ time_to_sleep (in milliseconds): The time a philosopher 
 will spend sleeping.\n◦ number_of_times_each_philosopher_must_eat (optional \
 argument): If all philosophers have eaten at least \
 number_of_times_each_philosopher_must_eat times, the simulation stops. If not \
-specified, the simulation stops when aphilosopher dies.\n");
+specified, the simulation stops when a philosopher dies.\n");
 	return (1);
 }
 
@@ -44,6 +44,8 @@ int	ft_error(int errnum)
 		return (err_msg("Not value. Error ", errnum));
 	else if (errnum == ERR_ATOI_OVER)
 		return (err_msg("Value overflow. Error ", errnum));
+	else if (errnum == ERR_INIT_PH_ARR)
+		return (err_msg("Array of philosopher not created. Error ", errnum));
 	else
 		return (err_msg("Unknown error ", errnum));
 }
