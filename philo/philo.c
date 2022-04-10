@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/10 15:09:32 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/10 20:30:54 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,76 @@
 #include "ft_util.h"
 #include "philo.h"
 
+long	ft_timestamp(t_timeval tv)
+{
+	t_timeval	ctv;
+	t_timeval	dtv;
+
+	gettimeofday(&ctv, NULL);
+	dtv.tv_sec = ctv.tv_sec - tv.tv_sec;
+	dtv.tv_usec = ctv.tv_usec - tv.tv_usec;
+	if (dtv.tv_usec < 0)
+	{
+		dtv.tv_sec--;
+		dtv.tv_usec += 1000000;
+	}
+	return (dtv.tv_sec * 1000 + dtv.tv_usec / 1000);
+}
+
+void	ph_msg(t_philo *ph, char *msg)
+{
+	pthread_mutex_lock(&ph->param->mtx_print);
+	if (!ph->param->end_smltn)
+		printf("%ld %d %s\n", ft_timestamp(ph->param->start), ph->ph_num, msg);
+	pthread_mutex_unlock(&ph->param->mtx_print);
+}
+
+void	take_a_fork(t_philo *ph)
+{
+	pthread_mutex_lock(ph->mtx_rforks);
+	pthread_mutex_lock(ph->mtx_lforks);
+	ph_msg(ph, "take a fork\n");
+}
+
+void	put_a_fork(t_philo *ph)
+{
+	pthread_mutex_unlock(ph->mtx_rforks);
+	pthread_mutex_unlock(ph->mtx_lforks);
+}
+
+void	*ph_msg_died(t_philo *ph)
+{
+	pthread_mutex_lock(&ph->param->mtx_print);
+	put_a_fork(ph);
+	ph->param->end_smltn = 1;
+	ph->is_die = 1;
+	printf("%ld %d is died\n", ft_timestamp(ph->param->start), ph->ph_num);
+	pthread_mutex_unlock(&ph->param->mtx_print);
+	return (NULL);
+}
+
 void	*philosoph(void *arg)
 {
 	t_philo	*ph;
 
 	ph = (t_philo *)arg;
 	pthread_detach(ph->ph_thread);
-	pthread_mutex_lock(&ph->param->mtx_print);
-	printf("Philosoph %d live. Thread %p", ph->ph_num, &ph->ph_thread);
-	pthread_mutex_unlock(&ph->param->mtx_print);
+	ph_msg(ph, "philosoph live");
+	while (!ph->param->end_smltn)
+	{
+		take_a_fork(ph);
+		if (ft_timestamp(ph->last_eat) > ph->param->time_to_die)
+			return (ph_msg_died(ph));
+		gettimeofday(&ph->last_eat, NULL);
+		ph_msg(ph, "is eating\n");
+		usleep(ph->param->time_to_eat * 1000);
+		put_a_fork(ph);
+		if (ph->param->numb_ph_eat)
+			ph->eat_cnt++;
+		ph_msg(ph, "is sleeping\n");
+		usleep(ph->param->time_to_sleep * 1000);
+		ph_msg(ph, "is thinking\n");
+	}
 	return (NULL);
 }
 
@@ -67,9 +128,12 @@ int	main(int argc, char **argv)
 time_to_sleep %d\n[number_of_times_each_philosopher_must_eat] %d\n", \
 params.numb_philo, params.time_to_die, params.time_to_eat, \
 params.time_to_sleep, params.numb_ph_eat);
-	if (init_ph(&params, ph_arr))
+	if (init_ph(&params, &ph_arr))
 		return (ft_error(ERR_INIT_PH_ARR));
 	i = -1;
+	
+
+	usleep(1000000);
 	clear_ph(&params, ph_arr);
 }
 	// while (++i < params.numb_philo)
