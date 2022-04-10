@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 01:46:57 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/10 02:18:10 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/10 15:11:50 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	clear_ph(t_ph_param *params, t_philo *ph_arr)
 	return (0);
 }
 
-int	create_mutex(t_ph_param *params, t_philo *ph_arr)
+int	create_mutex(t_ph_param *params)
 {
 	int	i;
 
@@ -65,7 +65,7 @@ int	create_pharr(t_ph_param *params, t_philo *ph_arr)
 		free(ph_arr);
 		return (ERR_INIT_PH_ARR);
 	}
-	if (create_mutex(params, ph_arr))
+	if (create_mutex(params))
 	{
 		free(ph_arr);
 		free(params->mtx_forks);

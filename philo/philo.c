@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/10 02:23:41 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/10 15:09:32 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,15 @@
 #include "ft_util.h"
 #include "philo.h"
 
-void	*philosoph(void *ph)
+void	*philosoph(void *arg)
 {
+	t_philo	*ph;
+
+	ph = (t_philo *)arg;
+	pthread_detach(ph->ph_thread);
+	pthread_mutex_lock(&ph->param->mtx_print);
+	printf("Philosoph %d live. Thread %p", ph->ph_num, &ph->ph_thread);
+	pthread_mutex_unlock(&ph->param->mtx_print);
 	return (NULL);
 }
 
@@ -48,9 +55,10 @@ int	load_parameters(t_ph_param *params, int argc, char **argv)
 int	main(int argc, char **argv)
 {
 	t_ph_param	params;
-	t_ph_param	*ph_arr;
+	t_philo		*ph_arr;
 	int			i;
 
+	ph_arr = NULL;
 	if (argc != 5 && argc != 6)
 		return (ft_error(ERR_ARGUMENT));
 	if (load_parameters(&params, argc, argv))
@@ -63,6 +71,6 @@ params.time_to_sleep, params.numb_ph_eat);
 		return (ft_error(ERR_INIT_PH_ARR));
 	i = -1;
 	clear_ph(&params, ph_arr);
+}
 	// while (++i < params.numb_philo)
 	// 	pthread_create;
-}
