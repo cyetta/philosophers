@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 01:46:57 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/10 17:57:07 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/11 20:17:35 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	clear_ph(t_ph_param *params, t_philo *ph_arr)
 	i = -1;
 	while (++i < params->numb_philo)
 		pthread_mutex_destroy(&params->mtx_forks[i]);
+	pthread_mutex_destroy(&params->mtx_smltn);
 	pthread_mutex_destroy(&params->mtx_print);
 	free(ph_arr);
 	free(params->mtx_forks);
@@ -34,6 +35,13 @@ int	create_mutex(t_ph_param *params)
 	int	i;
 
 	i = -1;
+	if (pthread_mutex_init(&params->mtx_print, NULL))
+		return (ERR_INIT_PH_ARR);
+	if (pthread_mutex_init(&params->mtx_print, NULL))
+	{
+		pthread_mutex_destroy(&params->mtx_print);
+		return (ERR_INIT_PH_ARR);
+	}
 	while (++i < params->numb_philo)
 		if (pthread_mutex_init(&params->mtx_forks[i], NULL))
 			break ;
@@ -41,13 +49,8 @@ int	create_mutex(t_ph_param *params)
 	{
 		while (--i >= 0)
 			pthread_mutex_destroy(&params->mtx_forks[i]);
-		return (ERR_INIT_PH_ARR);
-	}
-	if (pthread_mutex_init(&params->mtx_print, NULL))
-	{
-		i = -1;
-		while (++i < params->numb_philo)
-			pthread_mutex_destroy(&params->mtx_forks[i]);
+		pthread_mutex_destroy(&params->mtx_print);
+		pthread_mutex_destroy(&params->mtx_smltn);
 		return (ERR_INIT_PH_ARR);
 	}
 	return (0);

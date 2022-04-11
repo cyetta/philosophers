@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/10 20:30:54 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/11 21:28:20 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,16 @@ void	ph_msg(t_philo *ph, char *msg)
 
 void	take_a_fork(t_philo *ph)
 {
-	pthread_mutex_lock(ph->mtx_rforks);
-	pthread_mutex_lock(ph->mtx_lforks);
+	if (ph->ph_num == ph->param->numb_philo)
+	{
+		pthread_mutex_lock(ph->mtx_lforks);
+		pthread_mutex_lock(ph->mtx_rforks);
+	}
+	else
+	{
+		pthread_mutex_lock(ph->mtx_rforks);
+		pthread_mutex_lock(ph->mtx_lforks);
+	}
 	ph_msg(ph, "take a fork\n");
 }
 
@@ -68,6 +76,20 @@ void	*ph_msg_died(t_philo *ph)
 	return (NULL);
 }
 
+int	end_smltn_chek(t_philo *ph)
+{
+	int	ret;
+
+	ret = 0;
+	pthread_mutex_lock(&ph->param->mtx_smltn);
+	if (ph->param->end_smltn)
+		ret++;
+	pthread_mutex_unlock(&ph->param->mtx_smltn);
+	return (ret);
+}
+
+		// if (ft_timestamp(ph->last_eat) > ph->param->time_to_die)
+		// 	return (ph_msg_died(ph));
 void	*philosoph(void *arg)
 {
 	t_philo	*ph;
@@ -75,11 +97,11 @@ void	*philosoph(void *arg)
 	ph = (t_philo *)arg;
 	pthread_detach(ph->ph_thread);
 	ph_msg(ph, "philosoph live");
-	while (!ph->param->end_smltn)
+	if (ph->ph_num % 2)
+		usleep(1000);
+	while (!end_smltn_chek(ph))
 	{
 		take_a_fork(ph);
-		if (ft_timestamp(ph->last_eat) > ph->param->time_to_die)
-			return (ph_msg_died(ph));
 		gettimeofday(&ph->last_eat, NULL);
 		ph_msg(ph, "is eating\n");
 		usleep(ph->param->time_to_eat * 1000);
@@ -131,7 +153,7 @@ params.time_to_sleep, params.numb_ph_eat);
 	if (init_ph(&params, &ph_arr))
 		return (ft_error(ERR_INIT_PH_ARR));
 	i = -1;
-	
+
 
 	usleep(1000000);
 	clear_ph(&params, ph_arr);
