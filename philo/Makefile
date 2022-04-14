@@ -1,7 +1,7 @@
 NAME	= philo
 BNS_N	=
 
-SRC_N 	= philo.c ft_error.c ft_util.c ft_atoi.c ph_init.c
+SRC_N 	= philo.c ft_error.c ft_util.c ft_atoi.c ph_init.c ph_util.c
 SRC_B 	=
 
 

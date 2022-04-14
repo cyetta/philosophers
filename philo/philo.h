@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:04:40 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/11 20:14:33 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/14 21:17:37 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_philo
 	int				ph_num;
 	pthread_t		ph_thread;
 	t_timeval		last_eat;
+	int				is_live;
 	pthread_mutex_t	*mtx_rforks;
 	pthread_mutex_t	*mtx_lforks;
 	int				eat_cnt;
@@ -45,4 +46,8 @@ typedef struct s_philo
 int		clear_ph(t_ph_param *params, t_philo *ph_arr);
 int		init_ph(t_ph_param *params, t_philo **ph_arr);
 void	*philosoph(void *ph);
+void	take_a_fork(t_philo *ph);
+void	put_a_fork(t_philo *ph);
+void	ph_msg(t_philo *ph, char *msg);
+void	*ph_msg_died(t_philo *ph);
 #endif

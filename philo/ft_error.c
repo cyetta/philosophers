@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:06:26 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/07 19:41:17 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/14 21:58:14 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	ft_error(int errnum)
 		return (err_msg("Value overflow. Error ", errnum));
 	else if (errnum == ERR_INIT_PH_ARR)
 		return (err_msg("Array of philosopher not created. Error ", errnum));
+	else if (errnum == ERR_INIT_PTH_ARR)
+		return (err_msg("Philosopher thread not created. Error ", errnum));
 	else
 		return (err_msg("Unknown error ", errnum));
 }
