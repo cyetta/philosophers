@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/14 23:51:27 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/15 04:49:53 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	*philosoph(void *arg)
 
 	ph = (t_philo *)arg;
 	pthread_detach(ph->ph_thread);
-	ph_msg(ph, "philosoph start");
+	// ph_msg(ph, "philosoph start");
 	ph->is_live = 1;
 	// if (ph->ph_num % 2)
 	// 	usleep(1000);
@@ -87,6 +87,7 @@ int	ph_control(t_ph_param *params, t_philo *ph_arr)
 {
 	int			i;
 	int			all_eat;
+	int			t_lasteat;
 
 	while (!params->end_smltn)
 	{
@@ -94,7 +95,8 @@ int	ph_control(t_ph_param *params, t_philo *ph_arr)
 		all_eat = 0;
 		while (++i < params->numb_philo)
 		{
-			if (ft_timestamp(ph_arr[i].last_eat) > params->time_to_eat)
+			t_lasteat = ft_timestamp(ph_arr[i].last_eat);
+			if ( t_lasteat > params->time_to_die)
 			{
 				ph_msg_died(&ph_arr[i]);
 				return (0);
@@ -131,8 +133,9 @@ int	main(int argc, char **argv)
 	// i = -1;
 	// while (++i < 20)
 	// 	printf("Sleep %ld ms\n", ft_msleep(1500));
-
-// 	printf("Number_of_philosophers %d\ntime_to_die %d\ntime_to_eat %d\n\
-// time_to_sleep %d\n[number_of_times_each_philosopher_must_eat] %d\n", \
-// params.numb_philo, params.time_to_die, params.time_to_eat, \
-// params.time_to_sleep, params.numb_ph_eat);
+/*
+printf("Number_of_philosophers %d\ntime_to_die %d\ntime_to_eat %d\n\
+time_to_sleep %d\n[number_of_times_each_philosopher_must_eat] %d\n", \
+params.numb_philo, params.time_to_die, params.time_to_eat, \
+params.time_to_sleep, params.numb_ph_eat);
+*/
