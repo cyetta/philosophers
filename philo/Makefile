@@ -11,8 +11,8 @@ INCPATH	= ${DIR_SRC} ${DIR_BON}
 
 CC = gcc
 RM = rm -f
-ifeq ($(DESKTOP_SESSION), ubuntu)
-	CFLAGS = -Wall -Wextra -Werror
+ifdef $(DESKTOP_SESSION)
+	CFLAGS = -Wall -Wextra -Werror -pthread
 else
 	CFLAGS = -Wall -Wextra -Werror
 endif
@@ -28,12 +28,12 @@ DPDS	= ${SRCS_P:.c=.d} ${SRCS_B:.c=.d}
 all:	${NAME}
 
 %.o : %.c
-	${CC} ${CFLAGS} -MMD -c $< -o $@ -pthread -I"${INCPATH}"
+	${CC} ${CFLAGS} -MMD -c $< -o $@ -I"${INCPATH}"
 
 include ${wildcard ${DPDS}}
 
 ${NAME}: ${OBJ_P}
-	${CC} ${CFLAGS} -o $@ -pthread ${OBJ_P}
+	${CC} ${CFLAGS} -o $@ ${OBJ_P}
 
 debug:
 	${MAKE} CFLAGS="${CFLAGS} -g3" ${NAME}

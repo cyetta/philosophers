@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/15 04:49:53 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/15 15:23:11 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,18 @@ void	*philosoph(void *arg)
 	// ph_msg(ph, "philosoph start");
 	ph->is_live = 1;
 	// if (ph->ph_num % 2)
-	// 	usleep(1000);
+	//  	usleep(1000);
 	while (!ph->param->end_smltn && ph->is_live)
 	{
 		take_a_fork(ph);
 		gettimeofday(&ph->last_eat, NULL);
-		ph_msg(ph, "is eating");
+		ph_msg(ph, "is eating\n");
 		ft_msleep(ph->param->time_to_eat);
-		put_a_fork(ph);
 		ph->eat_cnt++;
-		ph_msg(ph, "is sleeping");
+		put_a_fork(ph);
+		ph_msg(ph, "is sleeping\n");
 		ft_msleep(ph->param->time_to_sleep);
-		ph_msg(ph, "is thinking");
+		ph_msg(ph, "is thinking\n");
 	}
 	ph->is_live = 0;
 	return (NULL);

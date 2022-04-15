@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 01:46:57 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/14 22:11:28 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/15 14:25:49 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	create_mutex(t_ph_param *params)
 	i = -1;
 	if (pthread_mutex_init(&params->mtx_print, NULL))
 		return (ERR_INIT_PH_ARR);
-	if (pthread_mutex_init(&params->mtx_print, NULL))
+	if (pthread_mutex_init(&params->mtx_smltn, NULL))
 	{
 		pthread_mutex_destroy(&params->mtx_print);
 		return (ERR_INIT_PH_ARR);
@@ -71,7 +71,7 @@ int	create_pharr(t_ph_param *params, t_philo **ph_arr)
 	*ph_arr = (t_philo *) malloc(sizeof(t_philo) * params->numb_philo);
 	if (!*ph_arr)
 		return (ERR_INIT_PH_ARR);
-	memset((void*)*ph_arr, 0, sizeof(t_philo) * params->numb_philo);
+	memset((void *)*ph_arr, 0, sizeof(t_philo) * params->numb_philo);
 	params->mtx_forks = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t) \
 	* params->numb_philo);
 	if (!params->mtx_forks)
