@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 01:46:57 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/15 14:25:49 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/17 01:46:25 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	init_ph(t_ph_param *params, t_philo **ph_arr)
 			clear_ph(params, *ph_arr);
 			return (ERR_INIT_PTH_ARR);
 		}
-		(*ph_arr)[i].is_live = 1;
+		// (*ph_arr)[i].is_live = 1;
 	}
 	return (0);
 }

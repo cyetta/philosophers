@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/15 15:23:11 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/17 00:23:01 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	ph_control(t_ph_param *params, t_philo *ph_arr)
 		while (++i < params->numb_philo)
 		{
 			t_lasteat = ft_timestamp(ph_arr[i].last_eat);
-			if ( t_lasteat > params->time_to_die)
+			if (t_lasteat > params->time_to_die)
 			{
 				ph_msg_died(&ph_arr[i]);
 				return (0);

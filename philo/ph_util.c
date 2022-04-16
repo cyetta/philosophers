@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 16:29:22 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/15 15:31:19 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/17 02:14:33 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,25 @@ void	take_a_fork(t_philo *ph)
 	if (ph->ph_num == ph->param->numb_philo)
 	{
 		pthread_mutex_lock(ph->mtx_rforks);
-		ph_msg(ph, "take a rfork\n");
+		ph_msg(ph, "has taken a fork\n");
 		pthread_mutex_lock(ph->mtx_lforks);
-		ph_msg(ph, "take a lfork\n");
+		ph_msg(ph, "has taken a fork\n");
 	}
 	else
 	{
 		pthread_mutex_lock(ph->mtx_lforks);
-		ph_msg(ph, "take a lfork\n");
+		ph_msg(ph, "has taken a fork\n");
 		pthread_mutex_lock(ph->mtx_rforks);
-		ph_msg(ph, "take a rfork\n");
+		ph_msg(ph, "has taken a fork\n");
 	}
 }
 
 void	put_a_fork(t_philo *ph)
 {
 	pthread_mutex_unlock(ph->mtx_rforks);
-	ph_msg(ph, "put a rfork\n");
+	// ph_msg(ph, "put a fork\n");
 	pthread_mutex_unlock(ph->mtx_lforks);
-	ph_msg(ph, "put a lfork\n");
+	// ph_msg(ph, "put a fork\n");
 }
 	// if (ph->ph_num == 1)
 	// {

@@ -11,10 +11,10 @@ INCPATH	= ${DIR_SRC} ${DIR_BON}
 
 CC = gcc
 RM = rm -f
-ifdef $(DESKTOP_SESSION)
-	CFLAGS = -Wall -Wextra -Werror -pthread
+ifdef DESKTOP_SESSION
+CFLAGS = -Wall -Wextra -Werror -pthread
 else
-	CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 endif
 
 SRCS_P	= ${addprefix ${DIR_SRC}, ${SRC_N}}
