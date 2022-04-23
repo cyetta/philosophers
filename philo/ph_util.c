@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 16:29:22 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/17 02:14:33 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/23 21:57:13 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,19 @@ void	take_a_fork(t_philo *ph)
 
 void	put_a_fork(t_philo *ph)
 {
-	pthread_mutex_unlock(ph->mtx_rforks);
-	// ph_msg(ph, "put a fork\n");
-	pthread_mutex_unlock(ph->mtx_lforks);
-	// ph_msg(ph, "put a fork\n");
+	if (ph->ph_num == ph->param->numb_philo)
+	{
+		pthread_mutex_unlock(ph->mtx_lforks);
+		pthread_mutex_unlock(ph->mtx_rforks);
+	}
+	else
+	{
+		pthread_mutex_unlock(ph->mtx_rforks);
+		pthread_mutex_unlock(ph->mtx_lforks);
+	}
 }
+	// ph_msg(ph, "put a fork\n");
+	// ph_msg(ph, "put a fork\n");
 	// if (ph->ph_num == 1)
 	// {
 	// 	pthread_mutex_unlock(ph->mtx_rforks);

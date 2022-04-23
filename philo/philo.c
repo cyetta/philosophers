@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/17 00:23:01 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/23 17:30:08 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	*philosoph(void *arg)
 	pthread_detach(ph->ph_thread);
 	// ph_msg(ph, "philosoph start");
 	ph->is_live = 1;
-	// if (ph->ph_num % 2)
-	//  	usleep(1000);
+	if (ph->ph_num % 2)
+	  	usleep(1000);
 	while (!ph->param->end_smltn && ph->is_live)
 	{
 		take_a_fork(ph);
