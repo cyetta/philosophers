@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 01:46:57 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/17 01:46:25 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/30 18:57:48 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,22 @@
 #include "ft_error.h"
 #include "philo.h"
 
+	// int	ph_live;
+	// ph_live = 1;
+	// while (ph_live)
+	// {
+	// 	ph_live = 0;
+	// 	i = -1;
+	// 	while (++i < params->numb_philo)
+	// 		ph_live += ph_arr[i].is_live;
+	// }
 int	clear_ph(t_ph_param *params, t_philo *ph_arr)
 {
 	int	i;
-	int	ph_live;
 
-	ph_live = 1;
-	while (ph_live)
-	{
-		ph_live = 0;
-		i = -1;
-		while (++i < params->numb_philo)
-			ph_live += ph_arr[i].is_live;
-	}
+	i = -1;
+	while (++i < params->numb_philo)
+		pthread_join(ph_arr[i].ph_thread, NULL);
 	i = -1;
 	while (++i < params->numb_philo)
 		pthread_mutex_destroy(&params->mtx_forks[i]);
@@ -111,7 +114,7 @@ int	init_ph(t_ph_param *params, t_philo **ph_arr)
 			clear_ph(params, *ph_arr);
 			return (ERR_INIT_PTH_ARR);
 		}
-		// (*ph_arr)[i].is_live = 1;
 	}
 	return (0);
 }
+		// (*ph_arr)[i].is_live = 1;

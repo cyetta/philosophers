@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:12:58 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/23 22:04:50 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/30 21:28:23 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ long	ft_timestamp(t_timeval tv)
 		dtv.tv_sec--;
 		dtv.tv_usec += 1000000;
 	}
+	// dtv.tv_usec += 500;
+	dtv.tv_sec += ((dtv.tv_usec + 500) / 1000000);
+	dtv.tv_usec = (dtv.tv_usec + 500) % 1000000;
 	return (dtv.tv_sec * 1000 + dtv.tv_usec / 1000);
 }
 
@@ -93,11 +96,11 @@ long	ft_msleep(long ms)
 	if (ms <= 0)
 		return (0);
 	gettimeofday(&ctv, NULL);
-	if (ms > 10)
-		usleep((ms - 10) * 1000);
-	delta = 100;
+	if (ms > 5)
+		usleep((ms - 5) * 1000);
+	delta = 50;
 	dt = ft_timestamp(ctv);
-	while (ms > dt)
+	while (dt < ms)
 	{
 		usleep(delta);
 		dt = ft_timestamp(ctv);

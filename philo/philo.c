@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/23 17:30:08 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/04/30 20:33:18 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,21 @@ int	end_smltn_check(t_philo *ph)
 		// if (ph->param->numb_ph_eat)
 		// 	if (ph->eat_cnt++ >= ph->param->numb_ph_eat)
 		// 		break ;
+	// pthread_detach(ph->ph_thread);
 void	*philosoph(void *arg)
 {
 	t_philo	*ph;
 
 	ph = (t_philo *)arg;
-	pthread_detach(ph->ph_thread);
-	// ph_msg(ph, "philosoph start");
-	ph->is_live = 1;
 	if (ph->ph_num % 2)
-	  	usleep(1000);
+		usleep(50);
+	ph->is_live = 1;
+	ph->time_elapsed = 0;
+	gettimeofday(&ph->time_lastmsg, NULL);
 	while (!ph->param->end_smltn && ph->is_live)
 	{
-		take_a_fork(ph);
+		if (take_a_fork(ph))
+			break ;
 		gettimeofday(&ph->last_eat, NULL);
 		ph_msg(ph, "is eating\n");
 		ft_msleep(ph->param->time_to_eat);
