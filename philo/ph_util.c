@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 16:29:22 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/30 21:24:10 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/01 01:54:27 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,42 +30,56 @@ void	round_timeval2ms(t_timeval *time)
 	time->tv_usec = (time->tv_usec / 1000) * 1000;
 }
 
-void	ph_msg(t_philo *ph, char *msg)
+int	ph_msg(t_philo *ph, char *msg)
 {
+	if (ph->param->end_smltn || !ph->is_live)
+		return (1);
 	pthread_mutex_lock(&ph->param->mtx_print);
 	ph->time_elapsed += ft_timestamp(ph->time_lastmsg);
 	gettimeofday(&ph->time_lastmsg, NULL);
-	// round_timeval2ms(&ph->time_lastmsg);
-	if (!ph->param->end_smltn && ph->is_live)
-		printf("%ld %d %s", ph->time_elapsed, ph->ph_num, msg);
+	printf("%ld %d %s", ph->time_elapsed, ph->ph_num, msg);
 	pthread_mutex_unlock(&ph->param->mtx_print);
+	return (0);
+}
+	// round_timeval2ms(&ph->time_lastmsg);
+
+int	take_a_lfork(t_philo *ph)
+{
+	pthread_mutex_lock(ph->mtx_lforks);
+	if (ph_msg(ph, "has taken a fork\n"))
+	{
+		pthread_mutex_unlock(ph->mtx_lforks);
+		return (1);
+	}
+	return (0);
+}
+
+int	take_a_rfork(t_philo *ph)
+{
+	pthread_mutex_lock(ph->mtx_rforks);
+	if (ph_msg(ph, "has taken a fork\n"))
+	{
+		pthread_mutex_unlock(ph->mtx_rforks);
+		return (1);
+	}
+	return (0);
 }
 
 int	take_a_fork(t_philo *ph)
 {
 	if (ph->ph_num == ph->param->numb_philo)
 	{
-		pthread_mutex_lock(ph->mtx_rforks);
-		if (ph->param->end_smltn || !ph->is_live)
-		{
-			pthread_mutex_unlock(ph->mtx_rforks);
+		if (take_a_rfork(ph))
 			return (1);
-		}
-		ph_msg(ph, "has taken a fork\n");
-		pthread_mutex_lock(ph->mtx_lforks);
-		ph_msg(ph, "has taken a fork\n");
+		else if (take_a_lfork(ph))
+			return (1);
 	}
 	else
 	{
-		pthread_mutex_lock(ph->mtx_lforks);
-		if (ph->param->end_smltn || !ph->is_live)
-		{
-			pthread_mutex_unlock(ph->mtx_lforks);
+		if (take_a_lfork(ph))
 			return (1);
-		}
-		ph_msg(ph, "has taken a fork\n");
-		pthread_mutex_lock(ph->mtx_rforks);
-		ph_msg(ph, "has taken a fork\n");
+		else if (take_a_rfork(ph))
+			return (1);
 	}
 	return (0);
 }
@@ -96,6 +110,7 @@ void	*ph_msg_died(t_philo *ph)
 	ph->time_elapsed += ft_timestamp(ph->time_lastmsg);
 	gettimeofday(&ph->time_lastmsg, NULL);
 	printf("%ld %d is died\n", ph->time_elapsed, ph->ph_num);
+	put_a_fork(ph);
 	pthread_mutex_unlock(&ph->param->mtx_print);
 	return (NULL);
 }

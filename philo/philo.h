@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:04:40 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/30 18:15:23 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/01 01:47:40 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ int		init_ph(t_ph_param *params, t_philo **ph_arr);
 void	*philosoph(void *ph);
 int		take_a_fork(t_philo *ph);
 void	put_a_fork(t_philo *ph);
-void	ph_msg(t_philo *ph, char *msg);
+int		ph_msg(t_philo *ph, char *msg);
 void	*ph_msg_died(t_philo *ph);
 #endif
