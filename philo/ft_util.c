@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:12:58 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/01 11:59:17 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/01 17:07:31 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ long	ft_timestamp(t_timeval tv)
 		dtv.tv_sec--;
 		dtv.tv_usec += 1000000;
 	}
-	dtv.tv_sec += ((dtv.tv_usec + 500) / 1000000);
-	dtv.tv_usec = (dtv.tv_usec + 500) % 1000000;
 	return (dtv.tv_sec * 1000 + dtv.tv_usec / 1000);
 }
+	// dtv.tv_sec += ((dtv.tv_usec + 500) / 1000000);
+	// dtv.tv_usec = (dtv.tv_usec + 500) % 1000000;
 
 /*
 return ms elapsed since tv with precision delta (0..999)usec

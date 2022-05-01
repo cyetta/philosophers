@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:04:40 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/01 01:47:40 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/01 18:55:27 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_ph_param
 	int				time_to_sleep;
 	int				numb_ph_eat;
 	int				end_smltn;
-	t_timeval		start;
+	t_timeval		time_start;
 	pthread_mutex_t	mtx_smltn;
 	pthread_mutex_t	mtx_print;
 	pthread_mutex_t	*mtx_forks;
@@ -35,8 +35,6 @@ typedef struct s_philo
 {
 	t_ph_param		*param;
 	int				ph_num;
-	long			time_elapsed;
-	t_timeval		time_lastmsg;
 	pthread_t		ph_thread;
 	t_timeval		last_eat;
 	int				is_live;
@@ -51,5 +49,5 @@ void	*philosoph(void *ph);
 int		take_a_fork(t_philo *ph);
 void	put_a_fork(t_philo *ph);
 int		ph_msg(t_philo *ph, char *msg);
-void	*ph_msg_died(t_philo *ph);
+void	ph_msg_died(t_philo *ph);
 #endif

@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 16:29:22 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/01 01:54:27 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/01 20:05:38 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,20 @@ void	round_timeval2ms(t_timeval *time)
 
 int	ph_msg(t_philo *ph, char *msg)
 {
-	if (ph->param->end_smltn || !ph->is_live)
-		return (1);
+	// if (ph->param->end_smltn || !ph->is_live)
+	// 	return (1);
 	pthread_mutex_lock(&ph->param->mtx_print);
-	ph->time_elapsed += ft_timestamp(ph->time_lastmsg);
-	gettimeofday(&ph->time_lastmsg, NULL);
-	printf("%ld %d %s", ph->time_elapsed, ph->ph_num, msg);
+	if (ph->param->end_smltn || !ph->is_live)
+	{
+		pthread_mutex_unlock(&ph->param->mtx_print);
+		return (1);
+	}
+	printf("%ld %d %s", ft_timestamp(ph->param->time_start), ph->ph_num, msg);
 	pthread_mutex_unlock(&ph->param->mtx_print);
 	return (0);
 }
+	// ph->time_elapsed += ft_timestamp(ph->time_lastmsg);
+	// gettimeofday(&ph->time_lastmsg, NULL);
 	// round_timeval2ms(&ph->time_lastmsg);
 
 int	take_a_lfork(t_philo *ph)
@@ -102,15 +107,16 @@ void	put_a_fork(t_philo *ph)
 Print philosoph die.
 set end_simulation flag and reset is_live thread flag
 */
-void	*ph_msg_died(t_philo *ph)
+void	ph_msg_died(t_philo *ph)
 {
 	pthread_mutex_lock(&ph->param->mtx_print);
 	ph->param->end_smltn = 1;
 	ph->is_live = 0;
-	ph->time_elapsed += ft_timestamp(ph->time_lastmsg);
-	gettimeofday(&ph->time_lastmsg, NULL);
-	printf("%ld %d is died\n", ph->time_elapsed, ph->ph_num);
-	put_a_fork(ph);
+	printf("%ld %d is died\n", ft_timestamp(ph->param->time_start), ph->ph_num);
 	pthread_mutex_unlock(&ph->param->mtx_print);
-	return (NULL);
+	put_a_fork(ph);
 }
+	// printf("msg_died\n");
+	// return (NULL);
+	// ph->time_elapsed += ft_timestamp(ph->time_lastmsg);
+	// gettimeofday(&ph->time_lastmsg, NULL);

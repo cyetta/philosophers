@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/01 01:38:22 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/01 20:53:12 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@
 #include "ft_util.h"
 #include "philo.h"
 
-int	end_smltn_check(t_philo *ph)
-{
-	int	ret;
+// int	end_smltn_check(t_philo *ph)
+// {
+// 	int	ret;
 
-	ret = 0;
-	pthread_mutex_lock(&ph->param->mtx_smltn);
-	if (ph->param->end_smltn)
-		ret++;
-	pthread_mutex_unlock(&ph->param->mtx_smltn);
-	return (ret);
-}
+// 	ret = 0;
+// 	pthread_mutex_lock(&ph->param->mtx_smltn);
+// 	if (ph->param->end_smltn)
+// 		ret++;
+// 	pthread_mutex_unlock(&ph->param->mtx_smltn);
+// 	return (ret);
+// }
 
 		// if (ft_timestamp(ph->last_eat) > ph->param->time_to_die)
 		// 	return (ph_msg_died(ph));
@@ -45,11 +45,10 @@ void	*philosoph(void *arg)
 	if ((ph->ph_num - 1) % 2)
 		usleep(500);
 	ph->is_live = 1;
-	ph->time_elapsed = 0;
-	gettimeofday(&ph->time_lastmsg, NULL);
 	gettimeofday(&ph->last_eat, NULL);
 	while (!ph->param->end_smltn && ph->is_live)
 	{
+		usleep(300);
 		if (take_a_fork(ph))
 			break ;
 		gettimeofday(&ph->last_eat, NULL);
@@ -57,7 +56,8 @@ void	*philosoph(void *arg)
 		ft_msleep(ph->param->time_to_eat);
 		ph->eat_cnt++;
 		put_a_fork(ph);
-		ph_msg(ph, "is sleeping\n");
+		if (ph_msg(ph, "is sleeping\n"))
+			break ;
 		ft_msleep(ph->param->time_to_sleep);
 		ph_msg(ph, "is thinking\n");
 	}
@@ -102,7 +102,10 @@ int	ph_control(t_ph_param *params, t_philo *ph_arr)
 			if (t_lasteat > params->time_to_die)
 			{
 				ph_msg_died(&ph_arr[i]);
-				return (0);
+				printf("ph_control clear\n");
+// 				clear_ph(params, ph_arr);
+// printf("\nph_control return");
+				break ;
 			}
 			if (params->numb_ph_eat)
 				if (ph_arr[i].eat_cnt >= params->numb_ph_eat)
@@ -127,7 +130,10 @@ int	main(int argc, char **argv)
 	if (init_ph(&params, &ph_arr))
 		return (ft_error(ERR_INIT_PH_ARR));
 	ph_control(&params, ph_arr);
+	printf("aaaaa\n");
 	clear_ph(&params, ph_arr);
+	printf("bbbb\n");
+	return (0);
 }
 	// while (++i < params.numb_philo)
 	// 	pthread_create;

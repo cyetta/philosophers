@@ -6,10 +6,11 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 01:46:57 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/01 01:34:55 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/01 19:33:29 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include <sys/time.h>
@@ -32,8 +33,12 @@ int	clear_ph(t_ph_param *params, t_philo *ph_arr)
 
 	i = -1;
 	while (++i < params->numb_philo)
+	{
+		printf("join thread %d \n", i);
 		pthread_join(ph_arr[i].ph_thread, NULL);
+	}
 	i = -1;
+	printf("thread joined\n");
 	while (++i < params->numb_philo)
 		pthread_mutex_destroy(&params->mtx_forks[i]);
 	pthread_mutex_destroy(&params->mtx_smltn);
@@ -98,7 +103,7 @@ int	init_ph(t_ph_param *params, t_philo **ph_arr)
 	if (create_pharr(params, ph_arr))
 		return (ERR_INIT_PH_ARR);
 	i = -1;
-	gettimeofday(&params->start, NULL);
+	gettimeofday(&params->time_start, NULL);
 	while (++i < params->numb_philo)
 	{
 		(*ph_arr)[i].ph_num = i + 1;
