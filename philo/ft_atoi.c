@@ -6,14 +6,14 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 14:54:25 by cyetta            #+#    #+#             */
-/*   Updated: 2022/04/02 19:53:35 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/09 01:19:22 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_error.h"
 #include "ft_util.h"
 
-int	ft_isspace(char c)
+static int	ft_isspace(char c)
 {
 	if (c == ' ' || c == '\t' || c == '\n' || \
 		c == '\r' || c == '\f' || c == '\v')
@@ -21,7 +21,7 @@ int	ft_isspace(char c)
 	return (0);
 }
 
-int	ft_isdigit(int c)
+static int	ft_isdigit(int c)
 {
 	if ((c >= '0' && c <= '9'))
 		return (1);
@@ -58,12 +58,12 @@ static int	ft_skip_to_dig(char **str)
 /*
 Converting ascii numbers in the string to integer
 If no numbers found returned 2 and result=0
-If int32 overflowed returned 1 and resault undefined.
+If int32 overflowed returned 1 and result undefined.
 If conversion error free, 0 and int32 value are returned.
 Conversion ends on last number in the string or on resault overflow,
 rest symbols in string not parsed.
 */
-int	ft_atoi_ovfl(const char *str, int *resault)
+int	ft_atoi_ovfl(const char *str, int *result)
 {
 	unsigned int	res;
 	int				sign;
@@ -72,7 +72,7 @@ int	ft_atoi_ovfl(const char *str, int *resault)
 
 	s = (char *)str;
 	res = 0;
-	*resault = 0;
+	*result = 0;
 	sign = ft_skip_to_dig(&s);
 	if (sign == 0)
 		return (ERR_ATOI_NOTVALUE);
@@ -85,7 +85,7 @@ int	ft_atoi_ovfl(const char *str, int *resault)
 		res = res * 10 + (unsigned int)(*s - '0');
 		s++;
 	}
-	*resault = sign * (int)res;
+	*result = sign * (int)res;
 	if (!ft_isspace(*s) && *s != '\0')
 		overflow = ERR_ATOI_NOTVALUE;
 	return (overflow);

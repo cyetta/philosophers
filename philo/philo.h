@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:04:40 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/08 18:53:57 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/09 01:56:39 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
 # include <sys/time.h>
 
 typedef struct timeval	t_timeval;
+
+typedef enum e_phstatus
+{
+	PH_ISLIVE = 2,
+	PH_TODIE = 1,
+	PH_NOTLIVE = 0
+}	t_phstatus;
 
 typedef struct s_ph_mtx
 {
@@ -42,17 +49,25 @@ typedef struct s_philo
 	int				ph_num;
 	pthread_t		ph_thread;
 	t_timeval		last_eat;
-	int				is_live;
+	t_phstatus		is_live;
 	int				eat_cnt;
 	pthread_mutex_t	*mtx_rforks;
 	pthread_mutex_t	*mtx_lforks;
+	pthread_mutex_t	*mtx_islive;
+	pthread_mutex_t	*mtx_eatcnt;
 }	t_philo;
 
-int		clear_ph(t_ph_param *params, t_philo *ph_arr);
-int		init_ph(t_ph_param *params, t_philo **ph_arr);
-void	*philosoph(void *ph);
-int		take_a_fork(t_philo *ph);
-void	put_a_fork(t_philo *ph);
-int		ph_msg(t_philo *ph, char *msg);
-void	ph_msg_died(t_philo *ph);
+int			clear_ph(t_ph_param *params, t_philo *ph_arr);
+int			init_ph(t_ph_param *params, t_philo **ph_arr);
+void		*philosoph(void *ph);
+int			take_a_fork(t_philo *ph);
+void		put_a_fork(t_philo *ph);
+int			ph_msg(t_philo *ph, char *msg);
+void		ph_msg_died(t_philo *ph);
+int			create_mutex(t_ph_param *params);
+int			ph_mtx_dest(t_ph_mtx *mtx);
+void		set_ph_stat(t_philo *ph, t_phstatus stat);
+t_phstatus	get_ph_stat(t_philo *ph);
+void		set_ph_eatcnt(t_philo *ph, int eat_cnt);
+int			get_ph_eat(t_philo *ph);
 #endif
