@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/01 20:53:12 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/08 18:54:10 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,26 @@
 #include "ft_error.h"
 #include "ft_util.h"
 #include "philo.h"
+
+int	load_parameters(t_ph_param *params, int argc, char **argv)
+{
+	memset(params, 0, sizeof(t_ph_param));
+	if (ft_atoi_ovfl(argv[1], &params->numb_philo) || \
+	ft_atoi_ovfl(argv[2], &params->time_to_die) || \
+	ft_atoi_ovfl(argv[3], &params->time_to_eat) || \
+	ft_atoi_ovfl(argv[4], &params->time_to_sleep))
+		return (1);
+	if (params->numb_philo < 1 || params->time_to_die < 1 || \
+	params->time_to_eat < 1 || params->time_to_sleep < 1)
+		return (1);
+	if (argc == 6 && ft_atoi_ovfl(argv[5], &params->numb_ph_eat))
+		return (1);
+	if (argc == 6 && params->numb_ph_eat < 0)
+		return (1);
+	if (argc == 5)
+		params->numb_ph_eat = 0;
+	return (0);
+}
 
 // int	end_smltn_check(t_philo *ph)
 // {
@@ -65,26 +85,6 @@ void	*philosoph(void *arg)
 	return (NULL);
 }
 
-int	load_parameters(t_ph_param *params, int argc, char **argv)
-{
-	memset(params, 0, sizeof(t_ph_param));
-	if (ft_atoi_ovfl(argv[1], &params->numb_philo) || \
-	ft_atoi_ovfl(argv[2], &params->time_to_die) || \
-	ft_atoi_ovfl(argv[3], &params->time_to_eat) || \
-	ft_atoi_ovfl(argv[4], &params->time_to_sleep))
-		return (1);
-	if (params->numb_philo < 1 || params->time_to_die < 1 || \
-	params->time_to_eat < 1 || params->time_to_sleep < 1)
-		return (1);
-	if (argc == 6 && ft_atoi_ovfl(argv[5], &params->numb_ph_eat))
-		return (1);
-	if (argc == 6 && params->numb_ph_eat < 0)
-		return (1);
-	if (argc == 5)
-		params->numb_ph_eat = 0;
-	params->end_smltn = 0;
-	return (0);
-}
 
 int	ph_control(t_ph_param *params, t_philo *ph_arr)
 {

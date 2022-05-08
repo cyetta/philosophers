@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 01:46:57 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/01 19:33:29 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/08 20:20:27 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,27 +48,46 @@ int	clear_ph(t_ph_param *params, t_philo *ph_arr)
 	return (0);
 }
 
+int	ph_mtx_init(t_ph_mtx *mtx)
+{
+	if (pthread_mutex_init(&mtx->mtx_eatcnt, NULL))
+		return (ERR_INIT_PTH_ARR);
+	else if (pthread_mutex_init(&mtx->mtx_fork, NULL))
+	{
+		pthread_mutex_destroy(&mtx->mtx_eatcnt);
+		return (ERR_INIT_PTH_ARR);
+	}
+	else if (pthread_mutex_init(&mtx->mtx_islive, NULL))
+	{
+		pthread_mutex_destroy(&mtx->mtx_eatcnt);
+		pthread_mutex_destroy(&mtx->mtx_fork);
+		return (ERR_INIT_PTH_ARR);
+	}
+	return (0);
+}
+
+int	ph_mtx_dest(t_ph_mtx *mtx)
+{
+	pthread_mutex_destroy(&mtx->mtx_eatcnt);
+	pthread_mutex_destroy(&mtx->mtx_fork);
+	pthread_mutex_destroy(&mtx->mtx_islive);
+}
+
 int	create_mutex(t_ph_param *params)
 {
 	int	i;
 
-	i = -1;
 	if (pthread_mutex_init(&params->mtx_print, NULL))
 		return (ERR_INIT_PH_ARR);
-	if (pthread_mutex_init(&params->mtx_smltn, NULL))
-	{
-		pthread_mutex_destroy(&params->mtx_print);
-		return (ERR_INIT_PH_ARR);
-	}
+	i = -1;
 	while (++i < params->numb_philo)
-		if (pthread_mutex_init(&params->mtx_forks[i], NULL))
+		if (ph_mtx_init(&params->mtx_arr_forks[i]))
 			break ;
 	if (i != params->numb_philo)
 	{
 		while (--i >= 0)
-			pthread_mutex_destroy(&params->mtx_forks[i]);
+			ph_mtx_dest(&params->mtx_arr_forks[i]);
 		pthread_mutex_destroy(&params->mtx_print);
-		pthread_mutex_destroy(&params->mtx_smltn);
 		return (ERR_INIT_PH_ARR);
 	}
 	return (0);
@@ -80,9 +99,9 @@ int	create_pharr(t_ph_param *params, t_philo **ph_arr)
 	if (!*ph_arr)
 		return (ERR_INIT_PH_ARR);
 	memset((void *)*ph_arr, 0, sizeof(t_philo) * params->numb_philo);
-	params->mtx_forks = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t) \
+	params->mtx_arr_forks = (t_ph_mtx *) malloc(sizeof(t_ph_mtx) \
 	* params->numb_philo);
-	if (!params->mtx_forks)
+	if (!params->mtx_arr_forks)
 	{
 		free(*ph_arr);
 		return (ERR_INIT_PH_ARR);
@@ -90,9 +109,22 @@ int	create_pharr(t_ph_param *params, t_philo **ph_arr)
 	if (create_mutex(params))
 	{
 		free(*ph_arr);
-		free(params->mtx_forks);
+		free(params->mtx_arr_forks);
 		return (ERR_INIT_PH_ARR);
 	}
+	return (0);
+}
+
+int	lunch_ph(t_ph_param *params, t_philo *philo, int ph_num)
+{
+	philo->ph_num = ph_num + 1;
+	philo->param = params;
+	philo->mtx_lforks = &params->mtx_arr_forks[ph_num].mtx_fork;
+	philo->mtx_rforks = &params->mtx_arr_forks[(ph_num + 1) % \
+	params->numb_philo].mtx_fork;
+	gettimeofday(&philo->last_eat, NULL);
+	if (pthread_create(&philo->ph_thread, NULL, philosoph, philo))
+		return (ERR_INIT_PTH_ARR);
 	return (0);
 }
 
@@ -105,21 +137,11 @@ int	init_ph(t_ph_param *params, t_philo **ph_arr)
 	i = -1;
 	gettimeofday(&params->time_start, NULL);
 	while (++i < params->numb_philo)
-	{
-		(*ph_arr)[i].ph_num = i + 1;
-		(*ph_arr)[i].param = params;
-		(*ph_arr)[i].mtx_lforks = &params->mtx_forks[i];
-		(*ph_arr)[i].mtx_rforks = &params->mtx_forks[(i + 1) \
-		% params->numb_philo];
-		gettimeofday(&((*ph_arr)[i].last_eat), NULL);
-		if (pthread_create(&((*ph_arr)[i].ph_thread), NULL, \
-		philosoph, &(*ph_arr)[i]))
-		{
-			params->end_smltn = 1;
-			clear_ph(params, *ph_arr);
-			return (ERR_INIT_PTH_ARR);
-		}
-	}
-	return (0);
+		if (lunch_ph(params, &(*ph_arr)[i], i))
+			break;
+	if (i == params->numb_philo)
+		return (0);
+	clear_ph(params, *ph_arr);
+	return (ERR_INIT_PH_ARR);
 }
 		// (*ph_arr)[i].is_live = 1;

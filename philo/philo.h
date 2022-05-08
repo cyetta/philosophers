@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:04:40 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/01 18:55:27 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/08 18:53:57 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 
 typedef struct timeval	t_timeval;
 
+typedef struct s_ph_mtx
+{
+	pthread_mutex_t	mtx_fork;
+	pthread_mutex_t	mtx_islive;
+	pthread_mutex_t	mtx_eatcnt;
+}	t_ph_mtx;
+
 typedef struct s_ph_param
 {
 	int				numb_philo;
@@ -24,11 +31,9 @@ typedef struct s_ph_param
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				numb_ph_eat;
-	int				end_smltn;
 	t_timeval		time_start;
-	pthread_mutex_t	mtx_smltn;
 	pthread_mutex_t	mtx_print;
-	pthread_mutex_t	*mtx_forks;
+	t_ph_mtx		*mtx_arr_forks;
 }	t_ph_param;
 
 typedef struct s_philo
@@ -38,9 +43,9 @@ typedef struct s_philo
 	pthread_t		ph_thread;
 	t_timeval		last_eat;
 	int				is_live;
+	int				eat_cnt;
 	pthread_mutex_t	*mtx_rforks;
 	pthread_mutex_t	*mtx_lforks;
-	int				eat_cnt;
 }	t_philo;
 
 int		clear_ph(t_ph_param *params, t_philo *ph_arr);
