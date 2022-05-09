@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 01:46:57 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/09 19:52:47 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/09 20:52:05 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 #include "ft_error.h"
 #include "philo.h"
 
+/*
+Collect philosophe thread and free mutex and philosophe array
+*/
 int	clear_ph(t_ph_param *params, t_philo *ph_arr)
 {
 	int	i;
@@ -37,6 +40,9 @@ int	clear_ph(t_ph_param *params, t_philo *ph_arr)
 	return (0);
 }
 
+/*
+Allocate memory for mutex and philosophe array
+*/
 int	create_pharr(t_ph_param *params, t_philo **ph_arr)
 {
 	*ph_arr = (t_philo *) malloc(sizeof(t_philo) * params->numb_philo);
@@ -59,6 +65,9 @@ int	create_pharr(t_ph_param *params, t_philo **ph_arr)
 	return (0);
 }
 
+/*
+Init variable and create philosoph thread
+*/
 int	lunch_ph(t_ph_param *params, t_philo *philo, int ph_num)
 {
 	philo->ph_num = ph_num + 1;
@@ -77,6 +86,9 @@ int	lunch_ph(t_ph_param *params, t_philo *philo, int ph_num)
 	return (ERR_INIT_PTH_ARR);
 }
 
+/*
+Creates array of philosophe and start simulation
+*/
 int	init_ph(t_ph_param *params, t_philo **ph_arr)
 {
 	int	i;

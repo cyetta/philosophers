@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 16:58:45 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/09 18:57:21 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/09 21:00:16 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 #include "ft_util.h"
 #include "philo.h"
 
+/*
+Prints message from philosoph while them not dead
+*/
 int	ph_msg(t_philo *ph, char *msg)
 {
 	pthread_mutex_lock(&ph->param->mtx_print);
@@ -33,8 +36,8 @@ int	ph_msg(t_philo *ph, char *msg)
 }
 
 /*
-Print philosoph die.
-set end_simulation flag and reset is_live thread flag
+Print philosoph die. Set end_simulation flag
+put the forks
 */
 int	ph_msg_died(t_ph_param *params, t_philo *ph_arr, int i)
 {

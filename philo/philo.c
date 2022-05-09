@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/09 20:31:20 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/09 21:34:28 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	*philosoph(void *arg)
 	{
 		if (take_a_fork(ph))
 			break ;
-		set_ph_lasteat(ph);
 		if (ph_msg(ph, "is eating\n"))
 			break ;
+		set_ph_lasteat(ph);
 		set_ph_eatcnt(ph, ph->eat_cnt + 1);
 		ft_msleep(ph->param->time_to_eat);
 		put_a_fork(ph);
