@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 01:44:43 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/09 01:50:22 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/09 15:01:08 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,23 @@
 
 int	ph_mtx_init(t_ph_mtx *mtx)
 {
-	if (pthread_mutex_init(&mtx->mtx_eatcnt, NULL))
+	if (pthread_mutex_init(&mtx->mtx_fork, NULL))
 		return (ERR_INIT_PTH_ARR);
-	else if (pthread_mutex_init(&mtx->mtx_fork, NULL))
-	{
-		pthread_mutex_destroy(&mtx->mtx_eatcnt);
-		return (ERR_INIT_PTH_ARR);
-	}
 	else if (pthread_mutex_init(&mtx->mtx_islive, NULL))
 	{
+		pthread_mutex_destroy(&mtx->mtx_fork);
+		return (ERR_INIT_PTH_ARR);
+	}
+	else if (pthread_mutex_init(&mtx->mtx_eatcnt, NULL))
+	{
+		pthread_mutex_destroy(&mtx->mtx_islive);
+		pthread_mutex_destroy(&mtx->mtx_fork);
+		return (ERR_INIT_PTH_ARR);
+	}
+	else if (pthread_mutex_init(&mtx->mtx_lasteat, NULL))
+	{
 		pthread_mutex_destroy(&mtx->mtx_eatcnt);
+		pthread_mutex_destroy(&mtx->mtx_islive);
 		pthread_mutex_destroy(&mtx->mtx_fork);
 		return (ERR_INIT_PTH_ARR);
 	}
@@ -38,9 +45,10 @@ int	ph_mtx_init(t_ph_mtx *mtx)
 
 int	ph_mtx_dest(t_ph_mtx *mtx)
 {
+	pthread_mutex_destroy(&mtx->mtx_lasteat);
 	pthread_mutex_destroy(&mtx->mtx_eatcnt);
-	pthread_mutex_destroy(&mtx->mtx_fork);
 	pthread_mutex_destroy(&mtx->mtx_islive);
+	pthread_mutex_destroy(&mtx->mtx_fork);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/08 18:54:10 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/09 20:31:20 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,52 +39,42 @@ int	load_parameters(t_ph_param *params, int argc, char **argv)
 	return (0);
 }
 
-// int	end_smltn_check(t_philo *ph)
-// {
-// 	int	ret;
-
-// 	ret = 0;
-// 	pthread_mutex_lock(&ph->param->mtx_smltn);
-// 	if (ph->param->end_smltn)
-// 		ret++;
-// 	pthread_mutex_unlock(&ph->param->mtx_smltn);
-// 	return (ret);
-// }
-
-		// if (ft_timestamp(ph->last_eat) > ph->param->time_to_die)
-		// 	return (ph_msg_died(ph));
-		// if (ph->param->numb_ph_eat)
-		// 	if (ph->eat_cnt++ >= ph->param->numb_ph_eat)
-		// 		break ;
-	// pthread_detach(ph->ph_thread);
 void	*philosoph(void *arg)
 {
 	t_philo	*ph;
 
 	ph = (t_philo *)arg;
 	if ((ph->ph_num - 1) % 2)
-		usleep(500);
-	ph->is_live = 1;
-	gettimeofday(&ph->last_eat, NULL);
-	while (!ph->param->end_smltn && ph->is_live)
-	{
 		usleep(300);
+	set_ph_lasteat(ph);
+	while (get_ph_stat(ph) == PH_ISLIVE)
+	{
 		if (take_a_fork(ph))
 			break ;
-		gettimeofday(&ph->last_eat, NULL);
-		ph_msg(ph, "is eating\n");
+		set_ph_lasteat(ph);
+		if (ph_msg(ph, "is eating\n"))
+			break ;
+		set_ph_eatcnt(ph, ph->eat_cnt + 1);
 		ft_msleep(ph->param->time_to_eat);
-		ph->eat_cnt++;
 		put_a_fork(ph);
 		if (ph_msg(ph, "is sleeping\n"))
 			break ;
 		ft_msleep(ph->param->time_to_sleep);
 		ph_msg(ph, "is thinking\n");
 	}
-	ph->is_live = 0;
+	set_ph_stat(ph, PH_NOTLIVE);
 	return (NULL);
 }
 
+int	end_simulation(t_ph_param *params, t_philo *ph_arr)
+{
+	int	i;
+
+	i = -1;
+	while (++i < params->numb_philo)
+		set_ph_stat(&ph_arr[i], PH_TODIE);
+	return (0);
+}
 
 int	ph_control(t_ph_param *params, t_philo *ph_arr)
 {
@@ -92,27 +82,22 @@ int	ph_control(t_ph_param *params, t_philo *ph_arr)
 	int			all_eat;
 	int			t_lasteat;
 
-	while (!params->end_smltn)
+	while (1)
 	{
+		usleep(500);
 		i = -1;
 		all_eat = 0;
 		while (++i < params->numb_philo)
 		{
-			t_lasteat = ft_timestamp(ph_arr[i].last_eat);
+			t_lasteat = ft_timestamp(get_ph_lasteat(&ph_arr[i]));
 			if (t_lasteat > params->time_to_die)
-			{
-				ph_msg_died(&ph_arr[i]);
-				printf("ph_control clear\n");
-// 				clear_ph(params, ph_arr);
-// printf("\nph_control return");
-				break ;
-			}
+				return (ph_msg_died(params, ph_arr, i));
 			if (params->numb_ph_eat)
-				if (ph_arr[i].eat_cnt >= params->numb_ph_eat)
+				if (get_ph_eatcnt(&ph_arr[i]) >= params->numb_ph_eat)
 					all_eat++;
 		}
 		if (all_eat == params->numb_philo)
-			params->end_smltn = 1;
+			return (end_simulation(params, ph_arr));
 	}
 	return (0);
 }
@@ -130,21 +115,6 @@ int	main(int argc, char **argv)
 	if (init_ph(&params, &ph_arr))
 		return (ft_error(ERR_INIT_PH_ARR));
 	ph_control(&params, ph_arr);
-	printf("aaaaa\n");
 	clear_ph(&params, ph_arr);
-	printf("bbbb\n");
 	return (0);
 }
-	// while (++i < params.numb_philo)
-	// 	pthread_create;
-
-	// int i;
-	// i = -1;
-	// while (++i < 20)
-	// 	printf("Sleep %ld ms\n", ft_msleep(1500));
-/*
-printf("Number_of_philosophers %d\ntime_to_die %d\ntime_to_eat %d\n\
-time_to_sleep %d\n[number_of_times_each_philosopher_must_eat] %d\n", \
-params.numb_philo, params.time_to_die, params.time_to_eat, \
-params.time_to_sleep, params.numb_ph_eat);
-*/

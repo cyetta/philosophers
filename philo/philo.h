@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:04:40 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/09 01:56:39 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/09 17:01:59 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_ph_mtx
 	pthread_mutex_t	mtx_fork;
 	pthread_mutex_t	mtx_islive;
 	pthread_mutex_t	mtx_eatcnt;
+	pthread_mutex_t	mtx_lasteat;
 }	t_ph_mtx;
 
 typedef struct s_ph_param
@@ -55,6 +56,7 @@ typedef struct s_philo
 	pthread_mutex_t	*mtx_lforks;
 	pthread_mutex_t	*mtx_islive;
 	pthread_mutex_t	*mtx_eatcnt;
+	pthread_mutex_t	*mtx_lasteat;
 }	t_philo;
 
 int			clear_ph(t_ph_param *params, t_philo *ph_arr);
@@ -63,11 +65,14 @@ void		*philosoph(void *ph);
 int			take_a_fork(t_philo *ph);
 void		put_a_fork(t_philo *ph);
 int			ph_msg(t_philo *ph, char *msg);
-void		ph_msg_died(t_philo *ph);
+int			ph_msg_died(t_ph_param *params, t_philo *ph_arr, int i);
+int			end_simulation(t_ph_param *params, t_philo *ph_arr);
 int			create_mutex(t_ph_param *params);
 int			ph_mtx_dest(t_ph_mtx *mtx);
 void		set_ph_stat(t_philo *ph, t_phstatus stat);
 t_phstatus	get_ph_stat(t_philo *ph);
 void		set_ph_eatcnt(t_philo *ph, int eat_cnt);
-int			get_ph_eat(t_philo *ph);
+int			get_ph_eatcnt(t_philo *ph);
+void		set_ph_lasteat(t_philo *ph);
+t_timeval	get_ph_lasteat(t_philo *ph);
 #endif

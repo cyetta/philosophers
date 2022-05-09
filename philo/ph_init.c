@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/10 01:46:57 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/09 02:27:02 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/09 19:52:47 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,6 @@
 #include "ft_error.h"
 #include "philo.h"
 
-	// int	ph_live;
-	// ph_live = 1;
-	// while (ph_live)
-	// {
-	// 	ph_live = 0;
-	// 	i = -1;
-	// 	while (++i < params->numb_philo)
-	// 		ph_live += ph_arr[i].is_live;
-	// }
 int	clear_ph(t_ph_param *params, t_philo *ph_arr)
 {
 	int	i;
@@ -35,12 +26,8 @@ int	clear_ph(t_ph_param *params, t_philo *ph_arr)
 	while (++i < params->numb_philo)
 	{
 		if (ph_arr[i].ph_thread)
-		{
-			printf("join thread %d \n", i);
 			pthread_join(ph_arr[i].ph_thread, NULL);
-		}
 	}
-	printf("thread joined\n");
 	i = -1;
 	while (++i < params->numb_philo)
 		ph_mtx_dest(&params->mtx_arr_forks[i]);
@@ -78,6 +65,7 @@ int	lunch_ph(t_ph_param *params, t_philo *philo, int ph_num)
 	philo->param = params;
 	philo->mtx_islive = &params->mtx_arr_forks[ph_num].mtx_islive;
 	philo->mtx_eatcnt = &params->mtx_arr_forks[ph_num].mtx_eatcnt;
+	philo->mtx_lasteat = &params->mtx_arr_forks[ph_num].mtx_lasteat;
 	philo->mtx_lforks = &params->mtx_arr_forks[ph_num].mtx_fork;
 	philo->mtx_rforks = &params->mtx_arr_forks[(ph_num + 1) % \
 	params->numb_philo].mtx_fork;
