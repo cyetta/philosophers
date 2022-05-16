@@ -6,15 +6,11 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 16:58:45 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/09 21:00:16 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/17 00:44:46 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <string.h>
 #include "ft_error.h"
 #include "ft_util.h"
 #include "philo.h"

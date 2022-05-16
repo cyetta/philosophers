@@ -6,13 +6,14 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:04:40 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/16 17:33:37 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/17 00:30:27 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 # include <pthread.h>
+# include <semaphore.h>
 # include <sys/time.h>
 
 typedef struct timeval	t_timeval;

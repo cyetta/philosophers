@@ -6,11 +6,10 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 01:54:04 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/09 17:20:34 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/17 00:34:49 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pthread.h>
 #include "philo.h"
 
 void	set_ph_eatcnt(t_philo *ph, int eat_cnt)

@@ -6,18 +6,15 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/09 21:34:28 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/17 00:41:07 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
 #include <string.h>
+#include "philo.h"
 #include "ft_error.h"
 #include "ft_util.h"
-#include "philo.h"
 
 int	load_parameters(t_ph_param *params, int argc, char **argv)
 {
