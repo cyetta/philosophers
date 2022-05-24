@@ -1,8 +1,8 @@
 NAME	= philo_bonus
 BNS_N	=
 
-SRC_N 	= philo_bonus.c ft_atoi.c ft_error.c ft_util.c ph_init.c ph_fork.c ph_msg.c\
-			ph_mtx_init.c ph_getseteat.c ph_getsetstat.c
+SRC_N 	= ft_atoi.c ft_error.c ft_util.c philo_bonus.c init_ph_bonus.c init_smp_bonus.c ph_prc_bonus.c \
+			ph_msg_bonus.c
 SRC_B 	=
 
 
@@ -37,7 +37,7 @@ ${NAME}: ${OBJ_P}
 	${CC} ${CFLAGS} -o $@ ${OBJ_P}
 
 debug:
-	${MAKE} CFLAGS="${CFLAGS} -g3" ${NAME}
+	${MAKE} CFLAGS="${CFLAGS} -g3 -fsanitize=thread" ${NAME}
 
 debug_bonus:
 	${MAKE} CFLAGS="${CFLAGS} -g3" SRC_N="${SRC_B}" DIR_SRC="${DIR_BON}" ${NAME}
@@ -53,4 +53,4 @@ fclean:	clean
 
 re:	fclean all
 
-.PHONY: all bonus clean fclean re debug debug_bonus libft libmlx
+.PHONY: all bonus clean fclean re debug debug_bonus
