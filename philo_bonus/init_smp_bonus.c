@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 13:16:16 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/25 21:48:21 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/25 21:54:45 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	unlink_smp(t_ph_param *prm)
 	int		i;
 	char	*str;
 
-	sem_unlink("phfrks");
-	sem_unlink("phprnt");
+	sem_unlink("phfrks0");
+	sem_unlink("phprnt0");
 	i = -1;
 	while (++i < prm->numb_philo)
 	{
