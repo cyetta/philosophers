@@ -37,7 +37,8 @@ ${NAME}: ${OBJ_P}
 	${CC} ${CFLAGS} -o $@ ${OBJ_P}
 
 debug:
-	${MAKE} CFLAGS="${CFLAGS} -g3" ${NAME}
+#	${MAKE} CFLAGS="${CFLAGS} -g3" ${NAME}
+	${MAKE} CFLAGS="${CFLAGS} -g3 -fsanitize=thread" ${NAME}
 
 debug_bonus:
 	${MAKE} CFLAGS="${CFLAGS} -g3" SRC_N="${SRC_B}" DIR_SRC="${DIR_BON}" ${NAME}

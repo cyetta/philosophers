@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:06:26 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/24 13:48:57 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/25 21:13:45 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	ft_error(int errnum)
 		return (err_msg("Philosopher thread not created. Error ", errnum));
 	else if (errnum == ERR_WAITPID)
 		return (err_msg("Wait child process error. Error ", errnum));
+	else if (errnum == ERR_SEMAPHOREINIT)
+		return (err_msg("Semaphore create error. Error ", errnum));
 	else
 		return (err_msg("Unknown error ", errnum));
 }

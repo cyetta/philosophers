@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/25 15:37:22 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/25 21:38:38 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ int	main(int argc, char **argv)
 	else if (load_parameters(&params, argc, argv))
 		return (ft_error(ERR_ARGUMENT));
 	else if (init_semph(&params))
-		return (ft_error(ERR_INIT_PH_ARR));
+	{
+		close_semph(&params);
+		return (ft_error(ERR_SEMAPHOREINIT));
+	}
 	if (init_ph(&params, &philo, &a_philo))
 		return (ft_error(ERR_INIT_PH_ARR));
 	if (lunch_ph(&philo, a_philo))

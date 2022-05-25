@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:41:14 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/25 16:25:35 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/25 19:27:42 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,7 @@ int	clean_ph(t_ph_param *params, pid_t *a_philo)
 	while (++i < params->numb_philo)
 	{
 		if (a_philo[i] > 0)
-		{
-			printf("%5dkill pid %d\n", i, a_philo[i]);
 			kill(a_philo[i], SIGTERM);
-		}
 	}
 	child_pid = waitpid(-1, &status, 0);
 	while (child_pid != -1)

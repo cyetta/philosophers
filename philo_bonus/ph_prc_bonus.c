@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 18:58:12 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/25 18:04:00 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/25 19:23:30 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	*monitor(void *mon)
 	{
 		if (ft_timestamp(get_lasteat(ph)) > ph->param->time_to_die)
 			exit(ph_msg_died(ph));
-		if (ph->param->numb_ph_eat > 0 && get_eatcnt(ph) >= ph->param->numb_ph_eat)
+		if (ph->param->numb_ph_eat > 0 && \
+	get_eatcnt(ph) >= ph->param->numb_ph_eat)
 			exit(PHILO_ATE);
 		usleep(500);
 	}

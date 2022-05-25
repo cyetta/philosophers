@@ -6,11 +6,12 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 14:04:17 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/24 18:17:06 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/25 20:28:11 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <unistd.h>
 #include "ft_error.h"
 #include "ft_util.h"
 #include "philo_bonus.h"
@@ -26,14 +27,8 @@ int	ph_msg(t_philo *ph, char *msg)
 	return (0);
 }
 
-	// if (get_ph_stat(ph) != PH_ISLIVE)
-	// {
-	// 	pthread_mutex_unlock(&ph->param->mtx_print);
-	// 	return (1);
-	// }
 /*
-Print philosoph die. Set end_simulation flag
-put the forks
+Print philosoph die.
 */
 int	ph_msg_died(t_philo *ph)
 {
