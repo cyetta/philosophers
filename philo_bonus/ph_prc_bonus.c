@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 18:58:12 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/24 20:28:27 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/25 18:04:00 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	*monitor(void *mon)
 	ph = (t_philo *)mon;
 	while (1)
 	{
-		if (ft_timestamp(ph->last_eat) > ph->param->time_to_die)
+		if (ft_timestamp(get_lasteat(ph)) > ph->param->time_to_die)
 			exit(ph_msg_died(ph));
-		if (ph->param->numb_ph_eat > 0 && ph->eat_cnt >= ph->param->numb_ph_eat)
+		if (ph->param->numb_ph_eat > 0 && get_eatcnt(ph) >= ph->param->numb_ph_eat)
 			exit(PHILO_ATE);
 		usleep(500);
 	}
@@ -53,7 +53,7 @@ void	phil_start(t_philo *philo)
 
 	if (ft_timestamp(philo->param->time_start) <= 50)
 		ft_msleep(50 - ft_timestamp(philo->param->time_start));
-	gettimeofday(&philo->last_eat, NULL);
+	set_lasteat(philo);
 	pthread_create(&mon, NULL, monitor, philo);
 	pthread_detach(mon);
 	i = -1;
@@ -63,8 +63,8 @@ void	phil_start(t_philo *philo)
 		ph_msg(philo, "is eating\n");
 		ft_msleep(philo->param->time_to_eat);
 		putafork(philo);
-		gettimeofday(&philo->last_eat, NULL);
-		philo->eat_cnt++;
+		set_lasteat(philo);
+		set_eatcnt(philo, philo->eat_cnt + 1);
 		ph_msg(philo, "is sleeping\n");
 		ft_msleep(philo->param->time_to_sleep);
 		ph_msg(philo, "is thinking\n");

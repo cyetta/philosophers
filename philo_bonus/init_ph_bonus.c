@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:41:14 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/24 13:49:46 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/25 16:25:35 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,9 @@ int	lunch_ph(t_philo *philo, pid_t *a_philo)
 	i = -1;
 	while (++i < philo->param->numb_philo)
 	{
-		gettimeofday(&philo->last_eat, NULL);
 		philo->ph_num = i + 1;
+		philo->sm_eatcnt = philo->param->a_ph_smph[i].sm_eatcnt;
+		philo->sm_lsteat = philo->param->a_ph_smph[i].sm_lasteat;
 		a_philo[i] = fork();
 		if (a_philo[i] < 0)
 			return (lunch_pherr(philo, a_philo));

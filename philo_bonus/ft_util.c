@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 18:12:58 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/09 21:40:59 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/25 15:39:44 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,58 @@ long	ft_msleep(long ms)
 		dt = ft_timestamp(ctv);
 	}
 	return (dt);
+}
+
+int	ft_strlen(const char *s)
+{
+	int	len;
+
+	len = 0;
+	while (*s++)
+		++len;
+	return (len);
+}
+
+int	ft_itoasz(int n)
+{
+	unsigned int	uint;
+	int				size;
+
+	size = 0;
+	if (n <= 0)
+	{
+		size = 1;
+		uint = -n;
+	}
+	else
+		uint = n;
+	while (uint)
+	{
+		++size;
+		uint = uint / 10;
+	}
+	return (size);
+}
+
+char	*ft_itoa2buf(int n, char *buf, int pos)
+{
+	int				size;
+	unsigned int	uint;
+
+	size = ft_itoasz(n);
+	if (n < 0)
+		uint = -n;
+	else
+		uint = n;
+	buf[pos + size] = '\0';
+	while (uint)
+	{
+		buf[--size + pos] = uint % 10 + '0';
+		uint = uint / 10;
+	}
+	if (n == 0)
+		buf[pos] = '0';
+	if (n < 0)
+		buf[pos] = '-';
+	return (buf);
 }

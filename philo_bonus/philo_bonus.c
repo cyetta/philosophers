@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/24 20:44:13 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/25 15:37:22 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,5 @@ int	main(int argc, char **argv)
 		return (ft_error(ERR_INIT_PH_ARR));
 	wait_simulation(&params, a_philo);
 	clean_ph(&params, a_philo);
-
 	return (0);
 }
