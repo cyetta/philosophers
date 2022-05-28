@@ -1,7 +1,7 @@
 NAME	= philo_bonus
 BNS_N	=
 
-SRC_N 	= ft_atoi.c ft_error.c ft_util.c philo_bonus.c init_ph_bonus.c init_smp_bonus.c ph_prc_bonus.c \
+SRC_N 	= ft_atoi_bonus.c ft_error_bonus.c ft_util_bonus.c philo_bonus.c init_ph_bonus.c init_smp_bonus.c ph_prc_bonus.c \
 			ph_msg_bonus.c ph_getset_bonus.c
 SRC_B 	=
 
@@ -37,7 +37,6 @@ ${NAME}: ${OBJ_P}
 	${CC} ${CFLAGS} -o $@ ${OBJ_P}
 
 debug:
-#	${MAKE} CFLAGS="${CFLAGS} -g3 -fsanitize=thread" ${NAME}
 	${MAKE} CFLAGS="${CFLAGS} -g3 " ${NAME}
 
 debug_bonus:

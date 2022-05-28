@@ -6,14 +6,14 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 18:58:12 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/28 11:55:23 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/28 17:21:11 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
 #include "philo_bonus.h"
-#include "ft_util.h"
+#include "ft_util_bonus.h"
 
 void	*monitor(void *mon)
 {

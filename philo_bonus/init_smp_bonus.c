@@ -6,14 +6,15 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 13:16:16 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/28 13:05:37 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/28 17:19:45 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include "philo_bonus.h"
-#include "ft_util.h"
-#include "ft_error.h"
+#include "ft_util_bonus.h"
+#include "ft_error_bonus.h"
 
 char	*crt_smphname(char *base, int num)
 {

@@ -6,15 +6,15 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 14:04:17 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/25 20:28:11 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/28 17:20:21 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <unistd.h>
-#include "ft_error.h"
-#include "ft_util.h"
 #include "philo_bonus.h"
+#include "ft_util_bonus.h"
+#include "ft_error_bonus.h"
 
 /*
 Prints message from philosoph while them not dead

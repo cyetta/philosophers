@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 17:39:59 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/28 12:44:37 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/28 17:30:30 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <signal.h>
-#include "ft_error.h"
-#include "ft_util.h"
 #include "philo_bonus.h"
+#include "ft_util_bonus.h"
+#include "ft_error_bonus.h"
 
 int	load_parameters(t_ph_param *params, int argc, char **argv)
 {
@@ -39,18 +39,15 @@ int	load_parameters(t_ph_param *params, int argc, char **argv)
 	return (0);
 }
 
-void	*ate_monitor(void *prm)
+int	ate_monitor(t_ph_param	*params)
 {
 	int			i;
-	t_ph_param	*params;
 
-	params = (t_ph_param *)prm;
 	if (!params->numb_ph_eat)
-		return (NULL);
+		exit (0);
 	i = -1;
 	while (++i < params->numb_philo)
 		sem_wait(params->sm_eatcnt);
-	sem_wait(params->sm_print);
 	i = -1;
 	while (++i < params->numb_philo)
 	{
@@ -59,7 +56,7 @@ void	*ate_monitor(void *prm)
 			kill(params->a_philo[i], SIGTERM);
 		sem_post(params->sm_aph_accss);
 	}
-	return (NULL);
+	exit (0);
 }
 
 int	foget_child(t_ph_param *params, pid_t child_pid)
@@ -71,7 +68,7 @@ int	foget_child(t_ph_param *params, pid_t child_pid)
 		if (params->a_philo[i] == child_pid)
 			break ;
 	if (i == params->numb_philo)
-		return (ERR_UNKNOWN);
+		return (0);
 	sem_wait(params->sm_aph_accss);
 	params->a_philo[i] = 0;
 	sem_post(params->sm_aph_accss);
@@ -82,10 +79,7 @@ int	wait_simulation(t_ph_param *params)
 {
 	int			status;
 	pid_t		child_pid;
-	pthread_t	mon;
 
-	pthread_create(&mon, NULL, ate_monitor, params);
-	pthread_detach(mon);
 	child_pid = waitpid(-1, &status, 0);
 	while (child_pid != -1)
 	{

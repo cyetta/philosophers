@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atoi_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 14:54:25 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/09 01:19:22 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/28 17:18:28 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_error.h"
-#include "ft_util.h"
+#include "ft_error_bonus.h"
+#include "ft_util_bonus.h"
 
 static int	ft_isspace(char c)
 {
