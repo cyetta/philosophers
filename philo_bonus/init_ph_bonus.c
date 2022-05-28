@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:41:14 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/25 19:27:42 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/28 13:07:48 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@
 #include "ft_util.h"
 #include "ft_error.h"
 
-int	init_ph(t_ph_param *params, t_philo *philo, pid_t **a_philo)
+int	init_ph(t_ph_param *params, t_philo *philo)
 {
-	*a_philo = (pid_t *)malloc(sizeof(pid_t) * params->numb_philo);
-	if (!*a_philo)
+	params->a_philo = (pid_t *)malloc(sizeof(pid_t) * params->numb_philo);
+	if (!params->a_philo)
 		return (ERR_INIT_PH_ARR);
-	memset(*a_philo, 0, sizeof(pid_t) * params->numb_philo);
+	memset(params->a_philo, 0, sizeof(pid_t) * params->numb_philo);
 	philo->param = params;
 	philo->ph_num = 0;
 	philo->eat_cnt = 0;
 	return (0);
 }
 
-int	clean_ph(t_ph_param *params, pid_t *a_philo)
+int	clean_ph(t_ph_param *params)
 {
 	int		i;
 	pid_t	child_pid;
@@ -42,8 +42,10 @@ int	clean_ph(t_ph_param *params, pid_t *a_philo)
 	i = -1;
 	while (++i < params->numb_philo)
 	{
-		if (a_philo[i] > 0)
-			kill(a_philo[i], SIGTERM);
+		sem_wait(params->sm_aph_accss);
+		if (params->a_philo[i] > 0)
+			kill(params->a_philo[i], SIGTERM);
+		sem_post(params->sm_aph_accss);
 	}
 	child_pid = waitpid(-1, &status, 0);
 	while (child_pid != -1)
@@ -51,17 +53,17 @@ int	clean_ph(t_ph_param *params, pid_t *a_philo)
 	if (errno != ECHILD)
 		exit(ft_error(ERR_WAITPID));
 	close_semph(params);
-	free(a_philo);
+	free(params->a_philo);
 	return (0);
 }
 
-int	lunch_pherr(t_philo *philo, pid_t *a_philo)
+int	lunch_pherr(t_philo *philo)
 {
-	clean_ph(philo->param, a_philo);
+	clean_ph(philo->param);
 	return (ERR_INIT_PH_ARR);
 }
 
-int	lunch_ph(t_philo *philo, pid_t *a_philo)
+int	lunch_ph(t_philo *philo)
 {
 	int	i;
 
@@ -70,12 +72,11 @@ int	lunch_ph(t_philo *philo, pid_t *a_philo)
 	while (++i < philo->param->numb_philo)
 	{
 		philo->ph_num = i + 1;
-		philo->sm_eatcnt = philo->param->a_ph_smph[i].sm_eatcnt;
-		philo->sm_lsteat = philo->param->a_ph_smph[i].sm_lasteat;
-		a_philo[i] = fork();
-		if (a_philo[i] < 0)
-			return (lunch_pherr(philo, a_philo));
-		else if (a_philo[i] == 0)
+		philo->sm_lsteat = philo->param->a_sm_lasteat[i];
+		philo->param->a_philo[i] = fork();
+		if (philo->param->a_philo[i] < 0)
+			return (lunch_pherr(philo));
+		else if (philo->param->a_philo[i] == 0)
 			phil_start(philo);
 	}
 	return (0);

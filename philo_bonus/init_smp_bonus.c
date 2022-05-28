@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 13:16:16 by cyetta            #+#    #+#             */
-/*   Updated: 2022/05/25 21:54:45 by cyetta           ###   ########.fr       */
+/*   Updated: 2022/05/28 13:05:37 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,14 @@ void	unlink_smp(t_ph_param *prm)
 	int		i;
 	char	*str;
 
+	sem_unlink("pharraccess0");
+	sem_unlink("pheatcnt0");
 	sem_unlink("phfrks0");
 	sem_unlink("phprnt0");
 	i = -1;
 	while (++i < prm->numb_philo)
 	{
-		str = crt_smphname("pheatcnt", i);
-		sem_unlink(str);
-		free(str);
-		str = crt_smphname("phlsteat", i);
+		str = crt_smphname("phlasteat", i);
 		sem_unlink(str);
 		free(str);
 	}
@@ -69,9 +68,13 @@ int	init_semph(t_ph_param *prm)
 	int		i;
 
 	unlink_smp(prm);
-	prm->a_ph_smph = (t_ph_sem *)malloc(sizeof(t_ph_sem) * prm->numb_philo);
-	if (!prm->a_ph_smph)
+	prm->a_sm_lasteat = (sem_t **)malloc(sizeof(sem_t *) * prm->numb_philo);
+	if (!prm->a_sm_lasteat)
 		return (ft_error(ERR_INIT_PTH_ARR));
+	if (open_smph(&prm->sm_aph_accss, "pharraccess", 0, 1))
+		return (ERR_SEMAPHOREINIT);
+	if (open_smph(&prm->sm_eatcnt, "pheatcnt", 0, 0))
+		return (ERR_SEMAPHOREINIT);
 	if (open_smph(&prm->sm_print, "phprnt", 0, 1))
 		return (ERR_SEMAPHOREINIT);
 	if (open_smph(&prm->sm_forks, "phfrks", 0, prm->numb_philo))
@@ -79,9 +82,7 @@ int	init_semph(t_ph_param *prm)
 	i = -1;
 	while (++i < prm->numb_philo)
 	{
-		if (open_smph(&prm->a_ph_smph[i].sm_eatcnt, "pheatcnt", i, 1))
-			return (ERR_SEMAPHOREINIT);
-		if (open_smph(&prm->a_ph_smph[i].sm_eatcnt, "phlsteat", i, 1))
+		if (open_smph(&prm->a_sm_lasteat[i], "phlasteat", i, 1))
 			return (ERR_SEMAPHOREINIT);
 	}
 	return (0);
@@ -93,12 +94,12 @@ int	close_semph(t_ph_param *prm)
 
 	i = -1;
 	while (++i < prm->numb_philo)
-	{
-		if (prm->a_ph_smph[i].sm_eatcnt)
-			sem_close(prm->a_ph_smph[i].sm_eatcnt);
-		if (prm->a_ph_smph[i].sm_lasteat)
-			sem_close(prm->a_ph_smph[i].sm_lasteat);
-	}
+		if (prm->a_sm_lasteat[i])
+			sem_close(prm->a_sm_lasteat[i]);
+	if (prm->sm_aph_accss)
+		sem_close(prm->sm_aph_accss);
+	if (prm->sm_eatcnt)
+		sem_close(prm->sm_eatcnt);
 	if (prm->sm_forks)
 		sem_close(prm->sm_forks);
 	if (prm->sm_print)
